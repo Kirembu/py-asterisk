@@ -957,15 +957,17 @@ class CoreActions(object):  # pylint: disable=R0904
         id = self._write_action('QueueAdd', params)
         return self._translate_response(self.read_response(id))
 
-    def QueuePause(self, queue, interface, paused):
-        'Pause <interface> in <queue>.'
+    def QueuePause(self, queue, interface, paused, reason=None):
+        'Pause <interface> in <queue> for reason <reason>.'
 
-        id = self._write_action('QueuePause', {
+        params = {
             'Queue': queue,
             'Interface': interface,
             'Paused': paused and 'true' or 'false'
-        })
-
+        }
+        if reason:
+            params['Reason'] = reason
+        id = self._write_action('QueuePause', params)
         return self._translate_response(self.read_response(id))
 
     def QueueRemove(self, queue, interface):
